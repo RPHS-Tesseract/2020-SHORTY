@@ -8,16 +8,13 @@ package org.firstinspires.ftc.teamcode.opmode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.AutonomousConfig;
 import org.firstinspires.ftc.teamcode.RobotConstants;
 import org.firstinspires.ftc.teamcode.RobotCore;
 import org.firstinspires.ftc.teamcode.drivetrain.HolonomicDrivetrain;
+import org.firstinspires.ftc.teamcode.util.gamepad.ButtonWrapper;
 
 @TeleOp(name="SHORTY")
 public class PrimaryTeleOp extends OpMode {
@@ -26,6 +23,8 @@ public class PrimaryTeleOp extends OpMode {
 
     private RobotCore robot;
     private RobotConstants constants;
+
+    private ButtonWrapper gamepad1_ButtonA;
 
     @Override
     public void init() {
@@ -36,15 +35,37 @@ public class PrimaryTeleOp extends OpMode {
         robot = new RobotCore(hardwareMap, HolonomicDrivetrain.class);
         robot.registerDefaults();
 
+        //gamepad1_ButtonA = new ButtonWrapper(gamepad1,"a");
+
         gamepad1.setJoystickDeadzone(0.02f);
     }
 
     @Override
     public void loop() {
         robot.gamepadDrive(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_trigger - gamepad1.left_trigger, gamepad1.right_stick_y);
+        updateLauncher();
+
+        if (gamepad1.a) {
+            direction = 1;
+        }
+
+        if (gamepad1.b) {
+            direction = -1;
+        }
+
         telemetry.addData("LS:", "X[%.3f] Y[%.3f]", gamepad1.left_stick_x, gamepad1.left_stick_y);
         telemetry.addData("RS:", "X[%.3f] Y[%.3f]", gamepad1.right_stick_x, gamepad1.right_stick_y);
-        telemetry.addLine("PRODUCTION BUILD.");
         telemetry.update();
+    }
+
+    private long lastLauncherUpdate = (long) robot.timer.milliseconds();
+    private byte direction = 1;
+    private double launcherSpeed = 0;
+    private void updateLauncher() {
+        long currentMillis = (long) robot.timer.milliseconds();
+        if (currentMillis > lastLauncherUpdate + constants.Launcher_MillisPerUnitVelocity ) {
+            lastLauncherUpdate = currentMillis;
+            launcherSpeed = Range.clip(launcherSpeed + Math.signum(direction) * 0.01, 0, 1);
+        }
     }
 }

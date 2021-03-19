@@ -18,6 +18,7 @@ public class RobotCore {
     private DcMotor frontRight;
     private DcMotor rearLeft;
     private DcMotor rearRight;
+    public DcMotor launcher;
 
     private HardwareMap map;
     //private HashMap<String, HardwareDevice> registrar;
@@ -44,29 +45,28 @@ public class RobotCore {
         frontRight = map.get(DcMotor.class, "FrontRight");
         rearLeft = map.get(DcMotor.class, "RearLeft");
         rearRight = map.get(DcMotor.class, "RearRight");
+        launcher = map.get(DcMotor.class, "Launcher");
 
         // Set motor RunMode
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Set motor Direction
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.FORWARD);
         rearRight.setDirection(DcMotor.Direction.REVERSE);
+        launcher.setDirection(DcMotor.Direction.FORWARD);
 
         // Set motor ZeroPowerBehavior
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //registrar.put("frontLeft", frontLeft);
-        //registrar.put("frontRight", frontRight);
-        //registrar.put("rearLeft", rearLeft);
-        //registrar.put("rearRight", rearRight);
+        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     /*public void registerDCMotor(Class<? extends DcMotor> type, String deviceName, DcMotor.Direction direction) {
