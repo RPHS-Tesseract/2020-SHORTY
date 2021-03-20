@@ -6,6 +6,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -19,6 +20,8 @@ public class RobotCore {
     private DcMotor rearLeft;
     private DcMotor rearRight;
     public DcMotor launcher;
+    public DcMotor spinner;
+    public DcMotor belt;
 
     private HardwareMap map;
     //private HashMap<String, HardwareDevice> registrar;
@@ -46,6 +49,8 @@ public class RobotCore {
         rearLeft = map.get(DcMotor.class, "RearLeft");
         rearRight = map.get(DcMotor.class, "RearRight");
         launcher = map.get(DcMotor.class, "Launcher");
+        spinner = map.get(DcMotor.class, "Spinner");
+        belt = map.get(DcMotor.class, "Belt");
 
         // Set motor RunMode
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -53,13 +58,17 @@ public class RobotCore {
         rearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        belt.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Set motor Direction
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.FORWARD);
         rearRight.setDirection(DcMotor.Direction.REVERSE);
-        launcher.setDirection(DcMotor.Direction.FORWARD);
+        launcher.setDirection(DcMotor.Direction.REVERSE);
+        spinner.setDirection(DcMotor.Direction.REVERSE);
+        belt.setDirection(DcMotor.Direction.REVERSE);
 
         // Set motor ZeroPowerBehavior
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -67,6 +76,8 @@ public class RobotCore {
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        belt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /*public void registerDCMotor(Class<? extends DcMotor> type, String deviceName, DcMotor.Direction direction) {

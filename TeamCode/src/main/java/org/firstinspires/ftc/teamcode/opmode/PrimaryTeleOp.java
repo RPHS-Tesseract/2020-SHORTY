@@ -36,6 +36,7 @@ public class PrimaryTeleOp extends OpMode {
         robot.registerDefaults();
 
         gamepad1_ButtonA = ButtonWrapper.wrap(gamepad1,"a");
+        lastLauncherUpdate = (long) robot.timer.milliseconds();
 
         gamepad1.setJoystickDeadzone(0.02f);
     }
@@ -53,13 +54,32 @@ public class PrimaryTeleOp extends OpMode {
             direction = -1;
         }
 
+        if (gamepad1.left_stick_button && gamepad1.y) {
+            System.exit(1);
+        }
+
+        robot.launcher.setPower(launcherSpeed);
+        robot.spinner.setPower(launcherSpeed);
+
+        byte beltDir = 0;
+        if (gamepad1.left_bumper) {
+            beltDir = -1;
+        } else if (gamepad1.right_bumper) {
+            beltDir = 1;
+        } else {
+            beltDir = 0;
+        }
+
+        robot.belt.setPower(beltDir);
+
         telemetry.addData("LS:", "X[%.3f] Y[%.3f]", gamepad1.left_stick_x, gamepad1.left_stick_y);
         telemetry.addData("RS:", "X[%.3f] Y[%.3f]", gamepad1.right_stick_x, gamepad1.right_stick_y);
+        telemetry.addData("Launcher", "speed %.3f", launcherSpeed);
         telemetry.update();
     }
 
-    private long lastLauncherUpdate = (long) robot.timer.milliseconds();
-    private byte direction = 1;
+    private long lastLauncherUpdate;
+    private byte direction = -1;
     private double launcherSpeed = 0;
     private void updateLauncher() {
         long currentMillis = (long) robot.timer.milliseconds();
