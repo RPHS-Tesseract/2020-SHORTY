@@ -35,7 +35,7 @@ public class PrimaryTeleOp extends OpMode {
         robot = new RobotCore(hardwareMap, HolonomicDrivetrain.class);
         robot.registerDefaults();
 
-        //gamepad1_ButtonA = new ButtonWrapper(gamepad1,"a");
+        gamepad1_ButtonA = ButtonWrapper.wrap(gamepad1,"a");
 
         gamepad1.setJoystickDeadzone(0.02f);
     }

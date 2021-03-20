@@ -33,7 +33,7 @@ public class RobotCore {
             timer = new ElapsedTime();
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
-            throw new RuntimeException(e); // Propagate error wrapped in RuntimeException
+            throw new RuntimeException(e); // Fatal, propagate error wrapped in RuntimeException
         }
 
     }
