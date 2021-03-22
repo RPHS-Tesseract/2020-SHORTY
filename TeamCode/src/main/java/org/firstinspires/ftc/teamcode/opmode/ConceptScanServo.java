@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.opmode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.robot.Robot;
 
@@ -61,7 +62,7 @@ public class ConceptScanServo extends LinearOpMode {
     private RobotConstants constants;
 
     // Define class members
-    Servo   servo;
+    CRServo   servo;
     double  position = (MAX_POS - MIN_POS) / 2; // Start at halfway position
     boolean rampUp = true;
 
@@ -70,7 +71,7 @@ public class ConceptScanServo extends LinearOpMode {
 
         // Connect to servo (Assume PushBot Left Hand)
         // Change the text in quotes to match any servo name on your robot.
-        servo = hardwareMap.get(Servo.class, constants.TestServo);
+        servo = hardwareMap.get(CRServo.class, constants.TestServo);
 
         // Wait for the start button
         telemetry.addData(">", "Press Start to scan Servo." );
@@ -105,7 +106,8 @@ public class ConceptScanServo extends LinearOpMode {
             telemetry.update();
 
             // Set the servo to the new position and pause;
-            servo.setPosition(position);
+           // servo.setPosition(position);
+            servo.setPower(position);
             sleep(CYCLE_MS);
             idle();
         }
