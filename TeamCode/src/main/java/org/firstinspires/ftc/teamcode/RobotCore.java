@@ -5,23 +5,28 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drivetrain.IDrivetrain;
 
 import java.lang.reflect.InvocationTargetException;
+import java.security.acl.AclEntry;
 
 public class RobotCore {
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor rearLeft;
     private DcMotor rearRight;
+
     public DcMotor launcher;
     public DcMotor spinner;
     public DcMotor belt;
+    public Servo AcceleratorFlag;
 
     private HardwareMap map;
     //private HashMap<String, HardwareDevice> registrar;
@@ -43,7 +48,7 @@ public class RobotCore {
 
     // Register default drive motors
     public void registerDefaults() {
-        // Map physical motors to variables
+        // Map physical DcMotors to variables
         frontLeft = map.get(DcMotor.class, "FrontLeft");
         frontRight = map.get(DcMotor.class, "FrontRight");
         rearLeft = map.get(DcMotor.class, "RearLeft");
@@ -78,6 +83,9 @@ public class RobotCore {
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         belt.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        AcceleratorFlag = map.get(Servo.class, "AcceleratorFlag");
+        AcceleratorFlag.setDirection(Servo.Direction.FORWARD);
     }
 
     /*public void registerDCMotor(Class<? extends DcMotor> type, String deviceName, DcMotor.Direction direction) {

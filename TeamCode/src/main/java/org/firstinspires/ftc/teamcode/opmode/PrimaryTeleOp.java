@@ -6,6 +6,7 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.util.gamepad.ButtonWrapper;
 @TeleOp(name="SHORTY")
 public class PrimaryTeleOp extends OpMode {
     private FtcDashboard dashboard;
-    private Telemetry telemetry;
+    private Telemetry tele;
 
     private RobotCore robot;
     private RobotConstants constants;
@@ -29,7 +30,7 @@ public class PrimaryTeleOp extends OpMode {
     @Override
     public void init() {
         dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        tele = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
         // Visualize scale: https://www.desmos.com/calculator/0xtjtrmqfk
         robot = new RobotCore(hardwareMap, HolonomicDrivetrain.class);
@@ -48,10 +49,12 @@ public class PrimaryTeleOp extends OpMode {
 
         if (gamepad1.a) {
             direction = 1;
+            robot.AcceleratorFlag.setPosition(0.5);
         }
 
         if (gamepad1.b) {
             direction = -1;
+            robot.AcceleratorFlag.setPosition(0);
         }
 
         if (gamepad1.left_stick_button && gamepad1.y) {
@@ -69,13 +72,14 @@ public class PrimaryTeleOp extends OpMode {
         } else {
             beltDir = 0;
         }
-
         robot.belt.setPower(beltDir);
 
-        telemetry.addData("LS:", "X[%.3f] Y[%.3f]", gamepad1.left_stick_x, gamepad1.left_stick_y);
-        telemetry.addData("RS:", "X[%.3f] Y[%.3f]", gamepad1.right_stick_x, gamepad1.right_stick_y);
-        telemetry.addData("Launcher", "speed %.3f", launcherSpeed);
-        telemetry.update();
+        tele.addData("LS:", "X[%.3f] Y[%.3f]", gamepad1.left_stick_x, gamepad1.left_stick_y);
+        tele.addData("RS:", "X[%.3f] Y[%.3f]", gamepad1.right_stick_x, gamepad1.right_stick_y);
+        tele.addData("Launcher", "speed %.3f", launcherSpeed);
+        tele.addData("Servo", "%.3f",
+                robot.AcceleratorFlag.getController().getServoPosition(robot.AcceleratorFlag.getPortNumber()));
+        tele.update();
     }
 
     private long lastLauncherUpdate;
